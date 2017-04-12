@@ -16,38 +16,68 @@ Then you'll import it into your testing script like this:
 You code this:
 
 ```python
-class LoginFormTest(FormTest):
-    form = LoginForm
-    required_fields = ['username', ('password', field.PASSWORD)]
+class SaveFormTest(FormTest):
+    form = SaveForm
+    required_fields = ['title', 'tags', ('url', field.URL)]
+
+    @cleaned(tags='one, two')
+    def test_cleaning_tags(self, tags):
+        self.assertIsInstance(tags, list)
+        self.assertEqual(len(tags), 2)
+        self.assertEqual(tags[1], 'two')
+
+    @cleaned(description='')
+    def test_cleaning_description(self, description):
+        self.assertIsNone(description)
 ```
 
 Instead of this:
 
 ```python
-class LoginFormTest(TestCase):
+class SaveFormTest(TestCase):
+
     data = {
-        'username': 'some username',
-        'password': 'some password',
+        'title': 'some title',
+        'url': 'http://some.url',
+        'tags': 'some tags',
     }
 
     def test_valid_form(self):
-        form = LoginForm(self.data)
+        form = SaveForm(self.data)
         self.assertTrue(form.is_valid())
 
+    def test_invalid_url(self):
+        my_data = copy(self.data)
+        my_data['url'] = 'invalid url'
+        form = SaveForm(my_data)
+
+        self.assertFalse(form.is_valid())
+
     def test_required_fields(self):
-        for field in ('username', 'password'):
+        for field in ('title', 'url', 'tags'):
             with self.subTest(field=field):
                 my_data = copy(self.data)
                 my_data[field] = ''
-                form = LoginForm(my_data)
+                form = SaveForm(my_data)
 
                 self.assertFalse(form.is_valid())
 
-    def test_password_safe_input(self):
-        form = LoginForm()
-        input_type = form['password'].field.widget.input_type
+    def test_cleaning_tags(self):
+        form = SaveForm({'tags': 'one, two'})
+        form.is_valid()
 
-        self.assertEqual(input_type, 'password')
+        tags = form.cleaned_data['tags']
+        self.assertIsInstance(tags, list)
+        self.assertEqual(len(tags), 2)
+        self.assertEqual(tags[1], 'two')
+
+    def test_cleaning_description(self):
+        form = SaveForm({'description': ''})
+        form.is_valid()
+
+        description = form.cleaned_data['description']
+        self.assertIsNone(description)
+
 ```
 
 And you code this:
