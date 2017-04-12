@@ -11,6 +11,35 @@ Then you'll import it into your testing script like this:
 
 `from django_forms_test import field, cleaned, FormTest`
 
+## Usage
+
+You will create a subclass of `FormTest` which is subclass of `django.test.TestCase`, so you can add tests as you are used to. To the attribute `form` you assign class of the form you are testing. `required_fields` should be a list of fields required by your form.
+
+```python
+class YourClass(FormTest):
+    form = YourForm
+    required_fields = ['email', 'message']
+```
+
+Instead of the name of a field you can use a tuple of name and field type. Available field types are `URL`, `TEXT`, `PASSWORD`, `USERNAME`, `EMAIL`. Field types serves to additional checking of permitted field value (e.g. a form shouldn't accept an invalid URL). The `TEXT` is the default type and has no additional verifications.
+
+```python
+class YourClass(FormTest):
+    form = YourForm
+    required_fields = [('email', field.EMAIL), 'message'] # same as ('message', field.TEXT)
+```
+
+For testing of form's cleaning methods you can use a decorator `cleaned` which accepts the input field values as arguments and passes them cleaned to your function.
+
+```python
+class YourClass(FormTest):
+    form = YourForm
+    
+    @cleaned(nick='  Bob ')
+    def test_strip_nick(self, nick):
+        self.assertEqual(nick, 'Bob')
+```
+
 ## Example
 
 You code this:
