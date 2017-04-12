@@ -1,10 +1,14 @@
 from setuptools import setup
 
+with open('README.md') as f:
+    readme = f.read()
+
 setup(
     name="django-forms-test",
     version="0.1",
 
     description="Module to simplify testing forms in Django framework",
+    long_description=readme,
     url="https://github.com/Thyrst/django-forms-test",
 
     author="Thyrst",
