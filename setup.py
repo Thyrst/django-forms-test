@@ -23,5 +23,5 @@ setup(
     ],
 
     keywords="django forms unittest test",
-    py_modules=["django-forms-test"],
+    py_modules=["django_forms_test"],
 )
