@@ -3,13 +3,17 @@ from setuptools import setup
 with open('README.md') as f:
     readme = f.read()
 
+VERSION = "0.1"
+URL = "https://github.com/Thyrst/django-forms-test"
+
 setup(
     name="django-forms-test",
-    version="0.1",
+    version=VERSION,
 
     description="Module to simplify testing forms in Django framework",
     long_description=readme,
-    url="https://github.com/Thyrst/django-forms-test",
+    url=URL,
+    download_url="%s/archive/%s.tar.gz" % (URL, VERSION),
 
     author="Thyrst",
     author_email="thyrst@seznam.cz",
