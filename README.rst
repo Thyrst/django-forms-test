@@ -8,7 +8,7 @@ Installation
 
 You can simply install it with use of ``pip``:
 
-``pip install git+https://github.com/Thyrst/django-forms-test.git``
+``pip install django-forms-test``
 
 Then you'll import it into your testing script like this:
 
