@@ -1,7 +1,10 @@
 from setuptools import setup
 
-with open('README.md') as f:
-    readme = f.read()
+try:
+    import pypandoc
+    readme = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    readme = open('README.md').read()
 
 VERSION = "0.1"
 URL = "https://github.com/Thyrst/django-forms-test"
