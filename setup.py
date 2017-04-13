@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = "0.1"
+VERSION = "0.1a"
 URL = "https://github.com/Thyrst/django-forms-test"
 
 description = open('README.rst').read()
